@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package ru.leti.wise.task.task;
+
+enum Category {
+  BASIC = 0;
+}
+
+message Task {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  Category category = 4;
+  string author_id = 5;
+  string graph_id = 6;
+  repeated Condition condition_list = 7;
+//  repeated Solution solution_list = 8; //TODO: А надо ли?
+
+}
+
+message Solution {
+  string id = 1;
+  string task_id = 2;
+  string author_id = 3;
+  bool is_correct = 4;
+  string graph_id = 5;
+}
+
+message Condition {
+  string id = 1;
+  string task_id = 2;
+  string plugin_id = 3;
+  Answer answer = 4;
+}
+
+message Answer {
+  string id = 1;
+  oneof Response {
+    Property property = 2;
+    Characteristic characteristic = 3;
+  }
+}
+
+message Property {
+  string response = 1;
+}
+
+message Characteristic {
+  string response = 1;
+}

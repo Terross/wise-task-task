@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: wise-task-plugin
+  datasource:
+    url: jdbc:postgresql://localhost:5434/wise_task_task
+    username: wise_task_task
+    password: wise_task_task
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+wavefront:
+  application:
+    name: wise-task-task
+    service: wise-task-task
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.type.descriptor.sql: TRACE
+
+grpc:
+  service:
+    graph:
+      port: 6565
+  port: 6567
+server:
+  port: 8082
