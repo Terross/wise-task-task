@@ -42,9 +42,9 @@ message Answer {
 }
 
 message Property {
-  string response = 1;
+  bool response = 1;
 }
 
 message Characteristic {
-  string response = 1;
+  int32 response = 1;
 }

@@ -8,15 +8,29 @@ import org.lognet.springboot.grpc.GRpcService;
 import ru.leti.wise.task.task.TaskGrpc;
 import ru.leti.wise.task.task.TaskServiceGrpc;
 import ru.leti.wise.task.task.helper.LogInterceptor;
+import ru.leti.wise.task.task.logic.*;
+
+import java.util.UUID;
 
 @Slf4j
 @GRpcService(interceptors = { LogInterceptor.class })
 @RequiredArgsConstructor
 public class TaskGrpcService extends TaskServiceGrpc.TaskServiceImplBase {
 
+    private final GetTaskOperation getTaskOperation;
+//    private final GetTasksOperation getTasksOperation;
+//    private final SolveTaskOperation solveTaskOperation;
+//    private final UpdateTaskOperation updateTaskOperation;
+//    private final DeleteTaskOperation deleteTaskOperation;
+//    private final CreateTaskOperation createTaskOperation;
+//    private final GetTaskSolutionOperation getTaskSolutionOperation;
+//    private final GetTaskSolutionsOperation getTaskSolutionsOperation;
+//    private final GetUserSolutionStatisticOperation getUserSolutionStatisticOperation;
+
     @Override
     public void getTask(TaskGrpc.GetTaskRequest request, StreamObserver<TaskGrpc.GetTaskResponse> responseObserver) {
-        super.getTask(request, responseObserver);
+        responseObserver.onNext(getTaskOperation.activate(UUID.fromString(request.getId())));
+        responseObserver.onCompleted();
     }
 
     @Override

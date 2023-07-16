@@ -1,9 +1,6 @@
 package ru.leti.wise.task.task.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,22 +15,26 @@ public abstract class Answer {
 
     @Data
     @Entity
+    @Table(name = "property")
     @EqualsAndHashCode(callSuper=true)
     public static class Property extends Answer {
+        @Column(name = "property_response")
         boolean response;
     }
 
     @Data
     @Entity
+    @Table(name = "characteristic")
     @EqualsAndHashCode(callSuper=true)
     public static class Characteristic extends Answer {
+        @Column(name = "characteristic_response")
         int response;
     }
 
-    //TODO: А надо ли?
-    @Data
-    @Entity
-    public static class Handwritten extends Answer {
-        String response;
-    }
+//    //TODO: А надо ли?
+//    @Data
+//    @Entity
+//    public static class Handwritten extends Answer {
+//        String response;
+//    }
 }

@@ -11,9 +11,14 @@ public class Condition {
     @Id
     @GeneratedValue
     private UUID id;
+
+    @Column(name = "task_id")
     private UUID taskId;
+
+    @Column(name = "plugin_id")
     private UUID pluginId;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id")
     @MapsId
     private Answer answer;
 }

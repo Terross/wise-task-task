@@ -23,11 +23,11 @@ public class Task {
     @Column(name = "graph_id")
     private UUID graphId;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id")
-    private List<Condition> conditions;
+    private List<Condition> conditionList;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id")
-    private List<Solution> solutions;
+    private List<Solution> solutionList;
 }
