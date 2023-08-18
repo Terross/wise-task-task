@@ -1,7 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS wise_task_task;
 
-
-CREATE TABLE wise_task_task.task
+CREATE TABLE wise_task_task.taskEntity
 (
     id          UUID    NOT NULL PRIMARY KEY,
     name        VARCHAR NOT NULL,
@@ -17,7 +16,7 @@ CREATE TABLE wise_task_task.condition
     task_id   UUID NOT NULL,
     plugin_id UUID NOT NULL,
 
-    CONSTRAINT fk_task_id FOREIGN KEY(task_id) REFERENCES wise_task_task.task(id)
+    CONSTRAINT fk_task_id FOREIGN KEY (task_id) REFERENCES wise_task_task.taskEntity (id)
 );
 
 CREATE TABLE wise_task_task.property
@@ -25,7 +24,7 @@ CREATE TABLE wise_task_task.property
     id       UUID    NOT NULL PRIMARY KEY,
     response BOOLEAN NOT NULL,
 
-    CONSTRAINT fk_condition_id FOREIGN KEY(id) REFERENCES wise_task_task.condition(id)
+    CONSTRAINT fk_condition_id FOREIGN KEY (id) REFERENCES wise_task_task.condition (id)
 
 );
 
@@ -34,7 +33,7 @@ CREATE TABLE wise_task_task.characteristic
     id       UUID NOT NULL PRIMARY KEY,
     response INT  NOT NULL,
 
-    CONSTRAINT fk_condition_id FOREIGN KEY(id) REFERENCES wise_task_task.condition(id)
+    CONSTRAINT fk_condition_id FOREIGN KEY (id) REFERENCES wise_task_task.condition (id)
 );
 
 CREATE TABLE wise_task_task.solution
@@ -45,5 +44,5 @@ CREATE TABLE wise_task_task.solution
     is_correct BOOLEAN NOT NULL,
     graph_id   UUID    NOT NULL,
 
-    CONSTRAINT fk_task_id FOREIGN KEY(task_id) REFERENCES wise_task_task.task(id)
+    CONSTRAINT fk_task_id FOREIGN KEY (task_id) REFERENCES wise_task_task.taskEntity (id)
 );

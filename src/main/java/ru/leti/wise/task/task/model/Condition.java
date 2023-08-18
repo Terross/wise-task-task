@@ -17,6 +17,7 @@ public class Condition {
 
     @Column(name = "plugin_id")
     private UUID pluginId;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
     @MapsId

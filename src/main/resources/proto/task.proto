@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package ru.leti.wise.task.task;
 
+import "graph.proto";
+
 enum Category {
   BASIC = 0;
 }
@@ -10,12 +12,10 @@ message Task {
   string id = 1;
   string name = 2;
   string description = 3;
-  Category category = 4;
-  string author_id = 5;
-  string graph_id = 6;
+  string author_id = 4;
+  Category category = 5;
+  ru.leti.wise.task.graph.Graph graph = 6;
   repeated Condition condition_list = 7;
-//  repeated Solution solution_list = 8; //TODO: А надо ли?
-
 }
 
 message Solution {
@@ -23,7 +23,7 @@ message Solution {
   string task_id = 2;
   string author_id = 3;
   bool is_correct = 4;
-  string graph_id = 5;
+  ru.leti.wise.task.graph.Graph graph = 5;
 }
 
 message Condition {
@@ -35,16 +35,16 @@ message Condition {
 
 message Answer {
   string id = 1;
-  oneof Response {
+  oneof Value {
     Property property = 2;
     Characteristic characteristic = 3;
   }
 }
 
 message Property {
-  bool response = 1;
+  bool value = 1;
 }
 
 message Characteristic {
-  int32 response = 1;
+  int32 value = 1;
 }

@@ -8,7 +8,8 @@ import java.util.UUID;
 
 @Data
 @Entity
-public class Task {
+@Table(name = "task")
+public class TaskEntity {
     @Id
     private UUID id;
     private String name;
@@ -26,8 +27,4 @@ public class Task {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id")
     private List<Condition> conditionList;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "task_id")
-    private List<Solution> solutionList;
 }

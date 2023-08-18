@@ -1,40 +1,40 @@
 package ru.leti.wise.task.task.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
 @Data
 @Entity
+@SuperBuilder
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Answer {
     @Id
-    UUID id;
+    protected UUID id;
 
     @Data
     @Entity
+    @SuperBuilder
+    @NoArgsConstructor
     @Table(name = "property")
     @EqualsAndHashCode(callSuper=true)
     public static class Property extends Answer {
-        @Column(name = "property_response")
-        boolean response;
+        @Column(name = "property_value")
+        boolean value;
     }
 
     @Data
     @Entity
+    @SuperBuilder
+    @NoArgsConstructor
     @Table(name = "characteristic")
     @EqualsAndHashCode(callSuper=true)
     public static class Characteristic extends Answer {
-        @Column(name = "characteristic_response")
-        int response;
+        @Column(name = "characteristic_value")
+        int value;
     }
 
-//    //TODO: А надо ли?
-//    @Data
-//    @Entity
-//    public static class Handwritten extends Answer {
-//        String response;
-//    }
 }

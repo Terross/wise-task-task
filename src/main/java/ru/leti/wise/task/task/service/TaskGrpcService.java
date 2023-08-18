@@ -1,12 +1,18 @@
 package ru.leti.wise.task.task.service;
 
 import com.google.protobuf.Empty;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
+import org.lognet.springboot.grpc.recovery.GRpcExceptionHandler;
+import org.lognet.springboot.grpc.recovery.GRpcExceptionScope;
+import org.lognet.springboot.grpc.recovery.GRpcServiceAdvice;
 import ru.leti.wise.task.task.TaskGrpc;
 import ru.leti.wise.task.task.TaskServiceGrpc;
+import ru.leti.wise.task.task.error.BusinessException;
+import ru.leti.wise.task.task.error.GrpcErrorHandler;
 import ru.leti.wise.task.task.helper.LogInterceptor;
 import ru.leti.wise.task.task.logic.*;
 
@@ -18,11 +24,11 @@ import java.util.UUID;
 public class TaskGrpcService extends TaskServiceGrpc.TaskServiceImplBase {
 
     private final GetTaskOperation getTaskOperation;
-//    private final GetTasksOperation getTasksOperation;
+    private final GetTasksOperation getTasksOperation;
 //    private final SolveTaskOperation solveTaskOperation;
-//    private final UpdateTaskOperation updateTaskOperation;
-//    private final DeleteTaskOperation deleteTaskOperation;
-//    private final CreateTaskOperation createTaskOperation;
+    private final UpdateTaskOperation updateTaskOperation;
+    private final DeleteTaskOperation deleteTaskOperation;
+    private final CreateTaskOperation createTaskOperation;
 //    private final GetTaskSolutionOperation getTaskSolutionOperation;
 //    private final GetTaskSolutionsOperation getTaskSolutionsOperation;
 //    private final GetUserSolutionStatisticOperation getUserSolutionStatisticOperation;
@@ -35,22 +41,27 @@ public class TaskGrpcService extends TaskServiceGrpc.TaskServiceImplBase {
 
     @Override
     public void getAllTask(Empty request, StreamObserver<TaskGrpc.GetAllTaskResponse> responseObserver) {
-        super.getAllTask(request, responseObserver);
+        responseObserver.onNext(getTasksOperation.activate());
+        responseObserver.onCompleted();
     }
 
     @Override
     public void deleteTask(TaskGrpc.DeleteTaskRequest request, StreamObserver<Empty> responseObserver) {
-        super.deleteTask(request, responseObserver);
+        deleteTaskOperation.activate(UUID.fromString(request.getId()));
+        responseObserver.onNext(Empty.newBuilder().build());
+        responseObserver.onCompleted();
     }
 
     @Override
     public void createTask(TaskGrpc.CreateTaskRequest request, StreamObserver<TaskGrpc.CreateTaskResponse> responseObserver) {
-        super.createTask(request, responseObserver);
+        responseObserver.onNext(createTaskOperation.activate(request));
+        responseObserver.onCompleted();
     }
 
     @Override
     public void updateTask(TaskGrpc.UpdateTaskRequest request, StreamObserver<TaskGrpc.UpdateTaskResponse> responseObserver) {
-        super.updateTask(request, responseObserver);
+        responseObserver.onNext(updateTaskOperation.activate(request));
+        responseObserver.onCompleted();
     }
 
     @Override
@@ -71,5 +82,16 @@ public class TaskGrpcService extends TaskServiceGrpc.TaskServiceImplBase {
     @Override
     public void getUserSolutionStatistic(TaskGrpc.GetUserSolutionStatisticRequest request, StreamObserver<TaskGrpc.GetAllTaskSolutionsResponse> responseObserver) {
         super.getUserSolutionStatistic(request, responseObserver);
+    }
+
+    @GRpcServiceAdvice
+    @RequiredArgsConstructor
+    static class ErrorHandler {
+        private final GrpcErrorHandler grpcErrorHandler;
+
+        @GRpcExceptionHandler
+        public Status handleBusinessException(BusinessException e, GRpcExceptionScope scope) {
+            return grpcErrorHandler.processError(e);
+        }
     }
 }

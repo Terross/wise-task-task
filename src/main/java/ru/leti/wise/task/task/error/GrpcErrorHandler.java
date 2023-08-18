@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class GrpcErrorHandler {
     public Status processError(BusinessException e) {
         return switch (e.getErrorCode()) {
-//            case PROFILE_NOT_FOUND -> Status.NOT_FOUND;
+            case TASK_NOT_FOUND -> Status.NOT_FOUND;
 //            case INVALID_PASSWORD -> Status.UNAUTHENTICATED;
             default -> Status.UNKNOWN;
         };
