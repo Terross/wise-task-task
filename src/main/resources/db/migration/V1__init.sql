@@ -19,19 +19,11 @@ CREATE TABLE wise_task_task.condition
     CONSTRAINT fk_task_id FOREIGN KEY (task_id) REFERENCES wise_task_task.taskEntity (id)
 );
 
-CREATE TABLE wise_task_task.property
+CREATE TABLE wise_task_task.answer
 (
-    id       UUID    NOT NULL PRIMARY KEY,
-    response BOOLEAN NOT NULL,
-
-    CONSTRAINT fk_condition_id FOREIGN KEY (id) REFERENCES wise_task_task.condition (id)
-
-);
-
-CREATE TABLE wise_task_task.characteristic
-(
-    id       UUID NOT NULL PRIMARY KEY,
-    response INT  NOT NULL,
+    id          UUID    NOT NULL PRIMARY KEY,
+    plugin_type VARCHAR NOT NULL,
+    value       VARCHAR NOT NULL,
 
     CONSTRAINT fk_condition_id FOREIGN KEY (id) REFERENCES wise_task_task.condition (id)
 );
@@ -45,4 +37,18 @@ CREATE TABLE wise_task_task.solution
     graph_id   UUID    NOT NULL,
 
     CONSTRAINT fk_task_id FOREIGN KEY (task_id) REFERENCES wise_task_task.taskEntity (id)
+);
+
+CREATE TABLE wise_task_task.plugin_result
+(
+    id                 UUID    NOT NULL PRIMARY KEY,
+    plugin_id          UUID    NOT NULL,
+    is_correct         BOOLEAN NOT NULL,
+    solution_id        UUID    NOT NULL,
+    answer_id          UUID    NOT NULL,
+    excepted_answer_id UUID    NOT NULL,
+
+    CONSTRAINT fk_solution_id FOREIGN KEY (solution_id) REFERENCES wise_task_task.solution (id),
+    CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES wise_task_task.answer (id),
+    CONSTRAINT fk_excepted_answer_id FOREIGN KEY (excepted_answer_id) REFERENCES wise_task_task.answer (id)
 );

@@ -1,4 +1,4 @@
-package ru.leti.wise.task.task.service;
+package ru.leti.wise.task.task.service.graph;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

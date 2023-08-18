@@ -9,7 +9,7 @@ import ru.leti.wise.task.task.error.BusinessException;
 import ru.leti.wise.task.task.error.ErrorCode;
 import ru.leti.wise.task.task.mapper.TaskMapper;
 import ru.leti.wise.task.task.repository.TaskRepository;
-import ru.leti.wise.task.task.service.GraphGrpcService;
+import ru.leti.wise.task.task.service.graph.GraphGrpcService;
 
 @Component
 @RequiredArgsConstructor

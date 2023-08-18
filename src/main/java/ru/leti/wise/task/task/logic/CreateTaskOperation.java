@@ -6,7 +6,7 @@ import ru.leti.wise.task.task.TaskGrpc.CreateTaskRequest;
 import ru.leti.wise.task.task.TaskGrpc.CreateTaskResponse;
 import ru.leti.wise.task.task.mapper.TaskMapper;
 import ru.leti.wise.task.task.repository.TaskRepository;
-import ru.leti.wise.task.task.service.GraphGrpcService;
+import ru.leti.wise.task.task.service.graph.GraphGrpcService;
 
 @Component
 @RequiredArgsConstructor

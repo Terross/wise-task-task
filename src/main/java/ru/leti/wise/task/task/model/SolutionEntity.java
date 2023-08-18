@@ -1,15 +1,15 @@
 package ru.leti.wise.task.task.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
 @Entity
-public class Solution {
+@Table(name = "solution")
+public class SolutionEntity {
 
     @Id
     private UUID id;
@@ -24,4 +24,8 @@ public class Solution {
 
     @Column(name = "graph_id")
     private UUID graphId;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "solution_id")
+    private List<PluginResultEntity> pluginResultEntities;
 }

@@ -50,11 +50,11 @@ message UpdateTaskResponse {
 }
 
 message SolveTaskRequest {
-  Solution solution = 1;
+  SolutionRequest solution = 1;
 }
 
 message SolveTaskResponse {
-  bool response = 1;
+  SolutionRequest solution = 1;
 }
 
 message GetTaskSolutionRequest {
@@ -62,7 +62,7 @@ message GetTaskSolutionRequest {
 }
 
 message GetTaskSolutionResponse {
-  Solution solution = 1;
+  SolutionResponse solution = 1;
 }
 
 message GetAllTaskSolutionsRequest {
@@ -70,7 +70,7 @@ message GetAllTaskSolutionsRequest {
 }
 
 message GetAllTaskSolutionsResponse {
-  repeated Solution solution = 1;
+  repeated SolutionResponse solution = 1;
 }
 
 message GetUserSolutionStatisticRequest {
@@ -78,5 +78,5 @@ message GetUserSolutionStatisticRequest {
 }
 
 message GetUserSolutionStatisticResponse {
-  repeated Solution solution = 1;
+  repeated SolutionResponse solution = 1;
 }

@@ -3,7 +3,7 @@ package ru.leti.wise.task.task.logic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.leti.wise.task.task.repository.TaskRepository;
-import ru.leti.wise.task.task.service.GraphGrpcService;
+import ru.leti.wise.task.task.service.graph.GraphGrpcService;
 
 import java.util.UUID;
 
