@@ -14,7 +14,7 @@ service TaskService {
   rpc SolveTask(SolveTaskRequest) returns (SolveTaskResponse);
   rpc GetTaskSolution(GetTaskSolutionRequest) returns (GetTaskSolutionResponse);
   rpc GetAllTaskSolutions(GetAllTaskSolutionsRequest) returns (GetAllTaskSolutionsResponse);
-  rpc GetUserSolutionStatistic(GetUserSolutionStatisticRequest) returns (GetAllTaskSolutionsResponse);
+  rpc GetUserSolutionStatistic(GetUserSolutionStatisticRequest) returns (GetUserSolutionStatisticResponse);
 }
 
 message GetTaskRequest {
@@ -54,7 +54,7 @@ message SolveTaskRequest {
 }
 
 message SolveTaskResponse {
-  SolutionRequest solution = 1;
+  SolutionResponse solution = 1;
 }
 
 message GetTaskSolutionRequest {
@@ -67,6 +67,7 @@ message GetTaskSolutionResponse {
 
 message GetAllTaskSolutionsRequest {
   string task_id = 1;
+  string author_id = 2;
 }
 
 message GetAllTaskSolutionsResponse {

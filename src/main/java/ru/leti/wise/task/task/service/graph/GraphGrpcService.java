@@ -6,6 +6,8 @@ import ru.leti.wise.task.graph.GraphGrpc;
 import ru.leti.wise.task.graph.GraphGrpc.GenerateGraphRequest;
 import ru.leti.wise.task.graph.GraphOuterClass.Graph;
 
+import java.util.UUID;
+
 
 @Component
 @RequiredArgsConstructor
@@ -29,5 +31,13 @@ public class GraphGrpcService {
                 .build();
 
         return graphStubHolder.get().createGraph(request).getGraph();
+    }
+
+    public Graph getGraphById(UUID id) {
+        var request = GraphGrpc.GetGraphByIdRequest.newBuilder()
+                .setId(id.toString())
+                .build();
+
+        return graphStubHolder.get().getGraphById(request).getGraph();
     }
 }

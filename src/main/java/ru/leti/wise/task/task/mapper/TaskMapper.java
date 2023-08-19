@@ -4,6 +4,7 @@ import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import ru.leti.wise.task.plugin.PluginOuterClass;
 import ru.leti.wise.task.task.TaskOuterClass;
 import ru.leti.wise.task.task.TaskOuterClass.Task;
 import ru.leti.wise.task.task.model.Category;
@@ -39,8 +40,8 @@ public interface TaskMapper {
         return TaskOuterClass.Category.valueOf(category.name());
     }
 
-    default TaskOuterClass.PluginType toPluginType(PluginType pluginType) {
-        return TaskOuterClass.PluginType.valueOf(pluginType.name());
+    default PluginOuterClass.PluginType toPluginType(PluginType pluginType) {
+        return PluginOuterClass.PluginType.valueOf(pluginType.name());
     }
 
 }

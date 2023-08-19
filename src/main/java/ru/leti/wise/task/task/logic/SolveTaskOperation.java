@@ -6,9 +6,7 @@ import ru.leti.wise.task.graph.GraphOuterClass;
 import ru.leti.wise.task.plugin.PluginOuterClass;
 import ru.leti.wise.task.task.TaskGrpc.SolveTaskRequest;
 import ru.leti.wise.task.task.TaskGrpc.SolveTaskResponse;
-import ru.leti.wise.task.task.TaskOuterClass;
 import ru.leti.wise.task.task.error.BusinessException;
-import ru.leti.wise.task.task.error.ErrorCode;
 import ru.leti.wise.task.task.mapper.SolutionMapper;
 import ru.leti.wise.task.task.model.Answer;
 import ru.leti.wise.task.task.model.Condition;
@@ -17,9 +15,6 @@ import ru.leti.wise.task.task.repository.SolutionRepository;
 import ru.leti.wise.task.task.repository.TaskRepository;
 import ru.leti.wise.task.task.service.plugin.PluginGrpcService;
 
-import java.util.UUID;
-
-import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static ru.leti.wise.task.task.error.ErrorCode.TASK_NOT_FOUND;
 
@@ -48,13 +43,17 @@ public class SolveTaskOperation {
         for (PluginResultEntity pluginResult: solution.getPluginResultEntities()) {
             if (!pluginResult.isCorrect()) {
                 isCorrect = false;
+                break;
             }
         }
 
         solution.setCorrect(isCorrect);
 
         solutionRepository.save(solution);
-        return null;
+
+        return SolveTaskResponse.newBuilder()
+                .setSolution(solutionMapper.toSolution(solution))
+                .build();
     }
 
     private PluginResultEntity getPluginResult(Condition condition, GraphOuterClass.Graph graph) {

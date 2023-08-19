@@ -25,13 +25,13 @@ public class TaskGrpcService extends TaskServiceGrpc.TaskServiceImplBase {
 
     private final GetTaskOperation getTaskOperation;
     private final GetTasksOperation getTasksOperation;
-//    private final SolveTaskOperation solveTaskOperation;
+    private final SolveTaskOperation solveTaskOperation;
     private final UpdateTaskOperation updateTaskOperation;
     private final DeleteTaskOperation deleteTaskOperation;
     private final CreateTaskOperation createTaskOperation;
-//    private final GetTaskSolutionOperation getTaskSolutionOperation;
-//    private final GetTaskSolutionsOperation getTaskSolutionsOperation;
-//    private final GetUserSolutionStatisticOperation getUserSolutionStatisticOperation;
+    private final GetTaskSolutionOperation getTaskSolutionOperation;
+    private final GetTaskSolutionsOperation getTaskSolutionsOperation;
+    private final GetUserSolutionStatisticOperation getUserSolutionStatisticOperation;
 
     @Override
     public void getTask(TaskGrpc.GetTaskRequest request, StreamObserver<TaskGrpc.GetTaskResponse> responseObserver) {
@@ -66,22 +66,26 @@ public class TaskGrpcService extends TaskServiceGrpc.TaskServiceImplBase {
 
     @Override
     public void solveTask(TaskGrpc.SolveTaskRequest request, StreamObserver<TaskGrpc.SolveTaskResponse> responseObserver) {
-        super.solveTask(request, responseObserver);
+        responseObserver.onNext(solveTaskOperation.activate(request));
+        responseObserver.onCompleted();
     }
 
     @Override
     public void getTaskSolution(TaskGrpc.GetTaskSolutionRequest request, StreamObserver<TaskGrpc.GetTaskSolutionResponse> responseObserver) {
-        super.getTaskSolution(request, responseObserver);
+        responseObserver.onNext(getTaskSolutionOperation.activate(request));
+        responseObserver.onCompleted();
     }
 
     @Override
     public void getAllTaskSolutions(TaskGrpc.GetAllTaskSolutionsRequest request, StreamObserver<TaskGrpc.GetAllTaskSolutionsResponse> responseObserver) {
-        super.getAllTaskSolutions(request, responseObserver);
+        responseObserver.onNext(getTaskSolutionsOperation.activate(request));
+        responseObserver.onCompleted();
     }
 
     @Override
-    public void getUserSolutionStatistic(TaskGrpc.GetUserSolutionStatisticRequest request, StreamObserver<TaskGrpc.GetAllTaskSolutionsResponse> responseObserver) {
-        super.getUserSolutionStatistic(request, responseObserver);
+    public void getUserSolutionStatistic(TaskGrpc.GetUserSolutionStatisticRequest request, StreamObserver<TaskGrpc.GetUserSolutionStatisticResponse> responseObserver) {
+        responseObserver.onNext(getUserSolutionStatisticOperation.activate(request));
+        responseObserver.onCompleted();
     }
 
     @GRpcServiceAdvice

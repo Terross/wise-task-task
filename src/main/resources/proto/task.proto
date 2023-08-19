@@ -3,14 +3,10 @@ syntax = "proto3";
 package ru.leti.wise.task.task;
 
 import "graph.proto";
+import "plugin.proto";
 
 enum Category {
   BASIC = 0;
-}
-
-enum PluginType {
-  PROPERTY = 0;
-  CHARACTERISTIC = 1;
 }
 
 message Task {
@@ -56,6 +52,6 @@ message Condition {
 
 message Answer {
   string id = 1;
-  PluginType plugin_type = 2;
+  ru.leti.wise.task.plugin.PluginType plugin_type = 2;
   string value = 3;
 }
