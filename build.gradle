@@ -2,7 +2,6 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.1'
 	id 'io.spring.dependency-management' version '1.1.0'
-	id "org.flywaydb.flyway" version "9.15.1"
 	id "com.google.protobuf" version "0.9.2"
 }
 
@@ -93,15 +92,6 @@ protobuf {
 			grpc {}
 		}
 	}
-}
-
-//Migration
-flyway {
-	url = 'jdbc:postgresql://localhost:5434/wise_task_task'
-	user = 'wise_task_task'
-	password = 'wise_task_task'
-	cleanDisabled = false
-	locations = ['filesystem:./src/main/resources/db/migration']
 }
 
 tasks.named('test') {
