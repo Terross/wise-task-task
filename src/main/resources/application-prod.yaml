@@ -25,6 +25,9 @@ grpc:
     graph:
       port: 6565
       host: wise-task-graph
+    plugin:
+      port: 6566
+      host: wise-task-plugin
   port: 6568
 server:
   port: 8082

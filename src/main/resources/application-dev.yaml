@@ -24,6 +24,10 @@ grpc:
   service:
     graph:
       port: 6565
+      host: localhost
+    plugin:
+      port: 6566
+      host: localhost
   port: 6568
 server:
   port: 8082

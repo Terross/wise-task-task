@@ -17,12 +17,15 @@ public class PluginStubHolder {
     @Value("${grpc.service.plugin.port}")
     private int port;
 
+    @Value("${grpc.service.plugin.host}")
+    private String host;
+
     private PluginServiceGrpc.PluginServiceBlockingStub pluginServiceStub;
 
 
     @PostConstruct
     void init() {
-        pluginServiceStub = newBlockingStub(forAddress("localhost", port).usePlaintext().build());
+        pluginServiceStub = newBlockingStub(forAddress(host, port).usePlaintext().build());
     }
 
     PluginServiceGrpc.PluginServiceBlockingStub get() {
