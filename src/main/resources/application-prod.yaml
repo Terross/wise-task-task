@@ -2,7 +2,7 @@ spring:
   application:
     name: wise-task-plugin
   datasource:
-    url: jdbc:postgresql://localhost:5434/wise_task_task
+    url: jdbc:postgresql://wise-task-db:5432/wise_task_task
     username: wise_task_task
     password: wise_task_task
     driver-class-name: org.postgresql.Driver
@@ -24,6 +24,7 @@ grpc:
   service:
     graph:
       port: 6565
+      host: wise-task-graph
   port: 6568
 server:
   port: 8082
