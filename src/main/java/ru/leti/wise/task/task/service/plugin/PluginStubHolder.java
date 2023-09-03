@@ -1,5 +1,6 @@
 package ru.leti.wise.task.task.service.plugin;
 
+import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import static io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder.forAddress;
 import static ru.leti.wise.task.plugin.PluginServiceGrpc.newBlockingStub;
 
 @Component
+@Observed
 @RequiredArgsConstructor
 public class PluginStubHolder {
 

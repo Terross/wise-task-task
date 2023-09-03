@@ -1,5 +1,6 @@
 package ru.leti.wise.task.task.service.graph;
 
+import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.leti.wise.task.graph.GraphGrpc;
@@ -10,6 +11,7 @@ import java.util.UUID;
 
 
 @Component
+@Observed
 @RequiredArgsConstructor
 public class GraphGrpcService {
 
