@@ -1,5 +1,6 @@
 package ru.leti.wise.task.task.service.plugin;
 
+import io.grpc.ClientInterceptor;
 import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,11 +24,13 @@ public class PluginStubHolder {
     private String host;
 
     private PluginServiceGrpc.PluginServiceBlockingStub pluginServiceStub;
-
+    private final ClientInterceptor grpcTracingClientInterceptor;
 
     @PostConstruct
     void init() {
-        pluginServiceStub = newBlockingStub(forAddress(host, port).usePlaintext().build());
+        pluginServiceStub = newBlockingStub(forAddress(host, port)
+                .intercept(grpcTracingClientInterceptor)
+                .usePlaintext().build());
     }
 
     PluginServiceGrpc.PluginServiceBlockingStub get() {
