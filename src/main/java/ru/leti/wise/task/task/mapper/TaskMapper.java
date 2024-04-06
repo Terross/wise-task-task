@@ -7,10 +7,6 @@ import org.mapstruct.Named;
 import ru.leti.wise.task.plugin.PluginOuterClass;
 import ru.leti.wise.task.task.TaskOuterClass;
 import ru.leti.wise.task.task.TaskOuterClass.Task;
-import ru.leti.wise.task.task.model.Category;
-import ru.leti.wise.task.task.model.Condition;
-import ru.leti.wise.task.task.model.PluginType;
-import ru.leti.wise.task.task.model.TaskEntity;
 
 import java.util.List;
 import java.util.UUID;

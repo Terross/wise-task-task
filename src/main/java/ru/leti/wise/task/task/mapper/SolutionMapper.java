@@ -7,9 +7,6 @@ import org.mapstruct.Named;
 import ru.leti.wise.task.graph.GraphOuterClass;
 import ru.leti.wise.task.plugin.PluginOuterClass;
 import ru.leti.wise.task.task.TaskOuterClass;
-import ru.leti.wise.task.task.model.PluginResultEntity;
-import ru.leti.wise.task.task.model.PluginType;
-import ru.leti.wise.task.task.model.SolutionEntity;
 
 import java.util.List;
 import java.util.UUID;
