@@ -24,27 +24,22 @@ public class TaskGraph extends Task {
     private UUID graphId;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    private Condition condition;
+    private List<PluginInfo> condition;
 
     @JdbcTypeCode(SqlTypes.JSON)
     private Rule rule;
 
     @Data
-    static class Condition {
-
-        private List<PluginInfo> pluginInfos;
-
-        @Data
-        static class PluginInfo {
-            private UUID pluginId;
-            private String value;
-            private String mistakeText;
-            private String sign;
-        }
+    public static class PluginInfo {
+        private UUID pluginId;
+        private String value;
+        private String mistakeText;
+        private String sign;
+        private PluginType pluginType;
     }
 
     @Data
-    static class Rule {
+    public static class Rule {
         private Boolean isColor;
         private Boolean isEdit;
         private Boolean isMove;

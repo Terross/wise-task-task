@@ -19,21 +19,15 @@ public class SolutionImplementation extends Solution {
     private String code;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    private ImplementationResult implementationResult;
+    private List<GraphResult> implementationResult;
 
     @Data
-    static class ImplementationResult {
-
-        private List<GraphResult> graphResults;
-
-        @Data
-        static class GraphResult {
-            private UUID graphId;
-            private Double originalTimeResult;
-            private Double timeResult;
-            private String originalResult;
-            private String result;
-        }
+    public static class GraphResult {
+        private UUID id;
+        private Double originalTimeResult;
+        private Double timeResult;
+        private String originalResult;
+        private String result;
     }
 }
 

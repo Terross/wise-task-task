@@ -6,7 +6,7 @@ import ru.leti.wise.task.task.TaskGrpc.CreateTaskRequest;
 import ru.leti.wise.task.task.TaskGrpc.CreateTaskResponse;
 import ru.leti.wise.task.task.mapper.TaskMapper;
 import ru.leti.wise.task.task.repository.TaskRepository;
-import ru.leti.wise.task.task.service.graph.GraphGrpcService;
+import ru.leti.wise.task.task.service.grpc.graph.GraphGrpcService;
 
 @Component
 @RequiredArgsConstructor
@@ -17,7 +17,9 @@ public class CreateTaskOperation {
     private final GraphGrpcService graphGrpcService;
 
     public CreateTaskResponse activate(CreateTaskRequest request) {
-        graphGrpcService.createGraph(request.getTask().getGraph());
+        if (request.getTask().hasTaskGraph()) {
+            graphGrpcService.createGraph(request.getTask().getTaskGraph().getGraph());
+        }
         taskRepository.save(taskMapper.toTask(request.getTask()));
         return CreateTaskResponse.newBuilder()
                 .setTask(request.getTask())

@@ -1,4 +1,4 @@
-package ru.leti.wise.task.task.service;
+package ru.leti.wise.task.task.service.grpc;
 
 import com.google.protobuf.Empty;
 import io.grpc.Status;

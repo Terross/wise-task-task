@@ -1,4 +1,4 @@
-package ru.leti.wise.task.task.service.plugin;
+package ru.leti.wise.task.task.service.grpc.plugin;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

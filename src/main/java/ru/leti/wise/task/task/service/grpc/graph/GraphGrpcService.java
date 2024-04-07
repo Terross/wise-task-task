@@ -1,4 +1,4 @@
-package ru.leti.wise.task.task.service.graph;
+package ru.leti.wise.task.task.service.grpc.graph;
 
 import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;

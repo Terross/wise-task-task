@@ -9,7 +9,7 @@ import ru.leti.wise.task.task.error.BusinessException;
 import ru.leti.wise.task.task.error.ErrorCode;
 import ru.leti.wise.task.task.mapper.TaskMapper;
 import ru.leti.wise.task.task.repository.TaskRepository;
-import ru.leti.wise.task.task.service.graph.GraphGrpcService;
+import ru.leti.wise.task.task.service.grpc.graph.GraphGrpcService;
 
 @Component
 @RequiredArgsConstructor
@@ -23,7 +23,9 @@ public class UpdateTaskOperation {
         var taskEntity = taskMapper.toTask(request.getTask());
         taskRepository.findById(taskEntity.getId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND));
-        graphGrpcService.createGraph(request.getTask().getGraph());
+        if (request.getTask().hasTaskGraph()) {
+            graphGrpcService.createGraph(request.getTask().getTaskGraph().getGraph());
+        }
         taskRepository.save(taskEntity);
         return TaskGrpc.UpdateTaskResponse.newBuilder()
                 .setTask(request.getTask())

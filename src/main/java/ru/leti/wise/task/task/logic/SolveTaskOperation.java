@@ -2,80 +2,25 @@ package ru.leti.wise.task.task.logic;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.leti.wise.task.graph.GraphOuterClass;
-import ru.leti.wise.task.plugin.PluginOuterClass;
 import ru.leti.wise.task.task.TaskGrpc.SolveTaskRequest;
 import ru.leti.wise.task.task.TaskGrpc.SolveTaskResponse;
 import ru.leti.wise.task.task.error.BusinessException;
-import ru.leti.wise.task.task.mapper.SolutionMapper;
-import ru.leti.wise.task.task.repository.SolutionRepository;
-import ru.leti.wise.task.task.repository.TaskRepository;
-import ru.leti.wise.task.task.service.plugin.PluginGrpcService;
+import ru.leti.wise.task.task.service.task.TaskGraphService;
 
-import static java.util.UUID.randomUUID;
-import static ru.leti.wise.task.task.error.ErrorCode.TASK_NOT_FOUND;
+import static ru.leti.wise.task.task.error.ErrorCode.INVALID_SOLUTION_TYPE;
 
 @Component
 @RequiredArgsConstructor
 public class SolveTaskOperation {
 
-    private final TaskRepository taskRepository;
-    private final SolutionMapper solutionMapper;
-    private final PluginGrpcService pluginGrpcService;
-    private final SolutionRepository solutionRepository;
+    private final TaskGraphService taskGraphService;
 
     public SolveTaskResponse activate(SolveTaskRequest request) {
-        var graph = request.getSolution().getGraph();
-        var solution = solutionMapper.toSolution(request.getSolution());
-        var task = taskRepository.findById(solution.getTaskId())
-                .orElseThrow(() -> new BusinessException(TASK_NOT_FOUND));
+        if (request.getSolution().hasSolutionImplementation()) {
 
-        var pluginResults = task.getConditionList().stream()
-                .map(condition -> getPluginResult(condition, graph))
-                .toList();
-
-        solution.setPluginResultEntities(pluginResults);
-
-        boolean isCorrect = true;
-        for (PluginResultEntity pluginResult: solution.getPluginResultEntities()) {
-            if (!pluginResult.isCorrect()) {
-                isCorrect = false;
-                break;
-            }
+        } else if (request.getSolution().hasSolutionGraph()) {
+            return taskGraphService.process(request);
         }
-
-        solution.setCorrect(isCorrect);
-
-        solutionRepository.save(solution);
-
-        return SolveTaskResponse.newBuilder()
-                .setSolution(solutionMapper.toSolution(solution))
-                .build();
-    }
-
-    private PluginResultEntity getPluginResult(Condition condition, GraphOuterClass.Graph graph) {
-        var response = pluginGrpcService.checkPluginSolution(buildPluginSolution(condition, graph));
-        var isCorrect = response.equals(condition.getAnswer().getValue());
-        var answer = condition.getAnswer();
-        return PluginResultEntity.builder()
-                .id(randomUUID())
-                .pluginId(condition.getPluginId())
-                .isCorrect(isCorrect)
-                .exceptedAnswer(answer)
-                .answer(Answer.builder()
-                        .id(randomUUID())
-                        .pluginType(answer.getPluginType())
-                        .value(response)
-                        .build())
-                .build();
-    }
-
-    private PluginOuterClass.Solution buildPluginSolution(Condition condition, GraphOuterClass.Graph graph) {
-        return PluginOuterClass.Solution.newBuilder()
-                .setPluginId(condition.getPluginId().toString())
-                .setPluginType(PluginOuterClass.PluginType
-                        .valueOf(condition.getAnswer().getPluginType().toString()))
-                .setGraph(graph)
-                .build();
+        throw new BusinessException(INVALID_SOLUTION_TYPE);
     }
 }

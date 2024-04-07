@@ -1,39 +1,36 @@
-package ru.leti.wise.task.task.service.plugin;
+package ru.leti.wise.task.task.service.grpc.graph;
 
 import io.grpc.ClientInterceptor;
-import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.leti.wise.task.plugin.PluginServiceGrpc;
+import ru.leti.wise.task.graph.GraphServiceGrpc;
 
 import javax.annotation.PostConstruct;
 
 import static io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder.forAddress;
-import static ru.leti.wise.task.plugin.PluginServiceGrpc.newBlockingStub;
+import static ru.leti.wise.task.graph.GraphServiceGrpc.newBlockingStub;
 
 @Component
-@Observed
 @RequiredArgsConstructor
-public class PluginStubHolder {
+public class GraphStubHolder {
 
-    @Value("${grpc.service.plugin.port}")
+    @Value("${grpc.service.graph.port}")
     private int port;
-
-    @Value("${grpc.service.plugin.host}")
+    @Value("${grpc.service.graph.host}")
     private String host;
 
-    private PluginServiceGrpc.PluginServiceBlockingStub pluginServiceStub;
+    private GraphServiceGrpc.GraphServiceBlockingStub graphServiceStub;
     private final ClientInterceptor grpcTracingClientInterceptor;
 
     @PostConstruct
     void init() {
-        pluginServiceStub = newBlockingStub(forAddress(host, port)
+        graphServiceStub = newBlockingStub(forAddress(host, port)
                 .intercept(grpcTracingClientInterceptor)
                 .usePlaintext().build());
     }
 
-    PluginServiceGrpc.PluginServiceBlockingStub get() {
-        return pluginServiceStub;
+    GraphServiceGrpc.GraphServiceBlockingStub get() {
+        return graphServiceStub;
     }
 }
