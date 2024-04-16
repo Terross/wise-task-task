@@ -53,9 +53,9 @@ message Rule {
 
 enum PluginType {
   GRAPH_PROPERTY = 0;
-    GRAPH_CHARACTERISTIC = 1;
-    GRAPH_NEW_GRAPH = 2;
-    GRAPH_STRING = 3;
+  GRAPH_CHARACTERISTIC = 1;
+  GRAPH_NEW_GRAPH = 2;
+  GRAPH_STRING = 3;
 }
 //-----------------------------------------------------------
 

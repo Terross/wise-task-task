@@ -34,6 +34,11 @@ public class TaskGrpcService extends TaskServiceGrpc.TaskServiceImplBase {
     private final GetTaskSolutionOperation getTaskSolutionOperation;
     private final GetTaskSolutionsOperation getTaskSolutionsOperation;
     private final GetUserSolutionStatisticOperation getUserSolutionStatisticOperation;
+    private final CreateCatalogOperation createCatalogOperation;
+    private final DeleteCatalogOperation deleteCatalogOperation;
+    private final GetCatalogsOperation getCatalogsOperation;
+    private final GetCatalogOperation getCatalogOperation;
+    private final UpdateCatalogOperation updateCatalogOperation;
 
     @Override
     public void getTask(TaskGrpc.GetTaskRequest request, StreamObserver<TaskGrpc.GetTaskResponse> responseObserver) {
@@ -87,6 +92,36 @@ public class TaskGrpcService extends TaskServiceGrpc.TaskServiceImplBase {
     @Override
     public void getUserSolutionStatistic(TaskGrpc.GetUserSolutionStatisticRequest request, StreamObserver<TaskGrpc.GetUserSolutionStatisticResponse> responseObserver) {
         responseObserver.onNext(getUserSolutionStatisticOperation.activate(request));
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void createCatalog(TaskGrpc.CreateCatalogRequest request, StreamObserver<TaskGrpc.CreateCatalogResponse> responseObserver) {
+        responseObserver.onNext(createCatalogOperation.activate(request));
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void deleteCatalog(TaskGrpc.DeleteCatalogRequest request, StreamObserver<Empty> responseObserver) {
+        responseObserver.onNext(deleteCatalogOperation.activate(UUID.fromString(request.getId())));
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void updateCatalog(TaskGrpc.UpdateCatalogRequest request, StreamObserver<TaskGrpc.UpdateCatalogResponse> responseObserver) {
+        responseObserver.onNext(updateCatalogOperation.activate(request));
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getCatalog(TaskGrpc.GetCatalogRequest request, StreamObserver<TaskGrpc.GetCatalogResponse> responseObserver) {
+        responseObserver.onNext(getCatalogOperation.activate(UUID.fromString(request.getId())));
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getAllCatalogs(Empty request, StreamObserver<TaskGrpc.GetAllCatalogsResponse> responseObserver) {
+        responseObserver.onNext(getCatalogsOperation.activate(request));
         responseObserver.onCompleted();
     }
 
