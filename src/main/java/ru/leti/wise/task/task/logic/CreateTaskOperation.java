@@ -17,7 +17,7 @@ public class CreateTaskOperation {
     private final GraphGrpcService graphGrpcService;
 
     public CreateTaskResponse activate(CreateTaskRequest request) {
-        if (request.getTask().hasTaskGraph()) {
+        if (request.getTask().hasTaskGraph() && request.getTask().getTaskGraph().hasGraph()) {
             graphGrpcService.createGraph(request.getTask().getTaskGraph().getGraph());
         }
         taskRepository.save(taskMapper.toTask(request.getTask()));
