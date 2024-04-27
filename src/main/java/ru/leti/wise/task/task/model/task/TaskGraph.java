@@ -36,6 +36,7 @@ public class TaskGraph extends Task {
         private String mistakeText;
         private String sign;
         private PluginType pluginType;
+        private Integer order;
     }
 
     @Data

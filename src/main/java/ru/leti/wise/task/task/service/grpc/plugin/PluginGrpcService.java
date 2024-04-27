@@ -18,4 +18,12 @@ public class PluginGrpcService {
                 .build();
        return pluginStubHolder.get().checkPluginSolution(request).getResult();
     }
+
+    public PluginOuterClass.ImplementationResult checkPluginImplementation(String implementationFile, String pluginId) {
+        var request = PluginGrpc.CheckPluginImplementationRequest.newBuilder()
+                .setId(pluginId)
+                .setFile(implementationFile)
+                .build();
+        return pluginStubHolder.get().checkPluginImplementation(request).getImplementationResult();
+    }
 }

@@ -28,7 +28,7 @@ public interface SolutionMapper {
 
     @Mapping(target = "graphId", source = "solution.solutionGraph.graph.id")
     @Mapping(target = ".", source = "solution.solutionGraph")
-    @Mapping(target = "pluginResults", ignore = true)
+    @Mapping(target = "result", ignore = true)
     SolutionGraph toSolutionGraph(TaskOuterClass.Solution solution);
 
     @Mapping(target = ".", source = "solution.solutionImplementation")
@@ -45,7 +45,7 @@ public interface SolutionMapper {
     }
 
     @Mapping(target = "solutionGraph.graph.id", source = "graphId")
-    @Mapping(target = "solutionGraph.pluginResults", source = "pluginResults")
+    @Mapping(target = "solutionGraph.pluginResults", source = "result")
     @Mapping(target = "solutionImplementation", ignore = true)
     TaskOuterClass.Solution toSolutionGraph(SolutionGraph solution);
 

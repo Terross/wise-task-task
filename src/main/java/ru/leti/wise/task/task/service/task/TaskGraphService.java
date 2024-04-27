@@ -21,6 +21,9 @@ import static ru.leti.wise.task.task.error.ErrorCode.TASK_NOT_FOUND;
 @RequiredArgsConstructor
 public class TaskGraphService {
 
+    private static final String TRUE_PROPERTY = "Выполняется";
+    private static final String FALSE_PROPERTY = "Не выполняется";
+
     private final TaskRepository taskRepository;
     private final SolutionMapper solutionMapper;
     private final GraphGrpcService graphGrpcService;
@@ -39,9 +42,9 @@ public class TaskGraphService {
                 .map(condition -> getPluginResult(condition, graph))
                 .toList();
 
-        solution.setPluginResults(pluginResults);
+        solution.setResult(pluginResults);
         boolean isCorrect = true;
-        for (SolutionGraph.PluginResult pluginResult : solution.getPluginResults()) {
+        for (SolutionGraph.PluginResult pluginResult : solution.getResult()) {
             if (!pluginResult.getIsCorrect()) {
                 isCorrect = false;
                 break;
@@ -63,7 +66,10 @@ public class TaskGraphService {
                     Integer.parseInt(pluginInfo.getValue()),
                     pluginInfo.getSign());
         } else {
-            isCorrect = response.equals(pluginInfo.getValue());
+            if (response.equals("true") && TRUE_PROPERTY.equals(pluginInfo.getValue()) ||
+                response.equals("false") && FALSE_PROPERTY.equals(pluginInfo.getValue())) {
+                isCorrect = true;
+            }
         }
         return SolutionGraph.PluginResult.builder()
                 .pluginId(pluginInfo.getPluginId())

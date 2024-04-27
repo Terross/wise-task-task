@@ -6,6 +6,7 @@ import ru.leti.wise.task.task.TaskGrpc.SolveTaskRequest;
 import ru.leti.wise.task.task.TaskGrpc.SolveTaskResponse;
 import ru.leti.wise.task.task.error.BusinessException;
 import ru.leti.wise.task.task.service.task.TaskGraphService;
+import ru.leti.wise.task.task.service.task.TaskImplementationService;
 
 import static ru.leti.wise.task.task.error.ErrorCode.INVALID_SOLUTION_TYPE;
 
@@ -14,10 +15,11 @@ import static ru.leti.wise.task.task.error.ErrorCode.INVALID_SOLUTION_TYPE;
 public class SolveTaskOperation {
 
     private final TaskGraphService taskGraphService;
+    private final TaskImplementationService taskImplementationService;
 
     public SolveTaskResponse activate(SolveTaskRequest request) {
         if (request.getSolution().hasSolutionImplementation()) {
-
+            return taskImplementationService.process(request);
         } else if (request.getSolution().hasSolutionGraph()) {
             return taskGraphService.process(request);
         }

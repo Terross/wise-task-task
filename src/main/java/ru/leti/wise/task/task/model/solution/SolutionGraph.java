@@ -22,7 +22,7 @@ public class SolutionGraph extends Solution {
     private UUID graphId;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    List<PluginResult> pluginResults;
+    List<PluginResult> result;
 
     @Data
     @Builder
