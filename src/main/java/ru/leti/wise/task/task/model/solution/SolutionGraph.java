@@ -3,9 +3,7 @@ package ru.leti.wise.task.task.model.solution;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -25,11 +23,14 @@ public class SolutionGraph extends Solution {
     List<PluginResult> result;
 
     @Data
+    @AllArgsConstructor
+    @RequiredArgsConstructor
     @Builder
     public static class PluginResult {
         private UUID pluginId;
         private Boolean isCorrect;
         private String value;
         private String trueValue;
+        private String pluginMessage;
     }
 }

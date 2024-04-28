@@ -76,6 +76,7 @@ public class TaskGraphService {
                 .isCorrect(isCorrect)
                 .trueValue(pluginInfo.getValue())
                 .value(response)
+                .pluginMessage(pluginInfo.getMistakeText())
                 .build();
     }
 
