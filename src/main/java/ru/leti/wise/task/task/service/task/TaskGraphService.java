@@ -15,6 +15,9 @@ import ru.leti.wise.task.task.repository.TaskRepository;
 import ru.leti.wise.task.task.service.grpc.graph.GraphGrpcService;
 import ru.leti.wise.task.task.service.grpc.plugin.PluginGrpcService;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 import static ru.leti.wise.task.task.error.ErrorCode.TASK_NOT_FOUND;
 
 @Component
@@ -35,11 +38,18 @@ public class TaskGraphService {
         TaskGraph task = (TaskGraph) taskRepository.findById(solution.getTaskId())
                 .orElseThrow(() -> new BusinessException(TASK_NOT_FOUND));
         var graph = request.getSolution().getSolutionGraph().getGraph();
+        HashMap<UUID, String> handWrittenAnswer = new HashMap<>();
+        request.getSolution().getSolutionGraph().getPluginStringResultList()
+                .stream()
+                .map(pluginStringInput -> handWrittenAnswer
+                        .put(UUID.fromString(pluginStringInput.getPluginId()), pluginStringInput.getHandWrittenAnswer()));
 
         graphGrpcService.createGraph(graph);
         var pluginResults = task.getCondition()
                 .stream()
-                .map(condition -> getPluginResult(condition, graph))
+                .map(condition -> handWrittenAnswer.containsKey(condition.getPluginId()) ?
+                        getPluginResult(condition, graph, handWrittenAnswer.get(condition.getPluginId()))
+                        : getPluginResult(condition, graph, ""))
                 .toList();
 
         solution.setResult(pluginResults);
@@ -57,8 +67,8 @@ public class TaskGraphService {
                 .build();
     }
 
-    private SolutionGraph.PluginResult getPluginResult(TaskGraph.PluginInfo pluginInfo, GraphOuterClass.Graph graph) {
-        var response = pluginGrpcService.checkPluginSolution(buildPluginSolution(pluginInfo, graph));
+    private SolutionGraph.PluginResult getPluginResult(TaskGraph.PluginInfo pluginInfo, GraphOuterClass.Graph graph, String handWrittenAnswer) {
+        var response = pluginGrpcService.checkPluginSolution(buildPluginSolution(pluginInfo, graph, handWrittenAnswer));
         var isCorrect = false;
         if (pluginInfo.getPluginType() == PluginType.GRAPH_CHARACTERISTIC) {
             isCorrect = validateCharacteristic(
@@ -80,10 +90,11 @@ public class TaskGraphService {
                 .build();
     }
 
-    private PluginOuterClass.Solution buildPluginSolution(TaskGraph.PluginInfo pluginInfo, GraphOuterClass.Graph graph) {
+    private PluginOuterClass.Solution buildPluginSolution(TaskGraph.PluginInfo pluginInfo, GraphOuterClass.Graph graph, String handWrittenAnswer) {
         return PluginOuterClass.Solution.newBuilder()
                 .setPluginId(pluginInfo.getPluginId().toString())
                 .setPluginType(PluginOuterClass.PluginType.valueOf(pluginInfo.getPluginType().toString()))
+                .setHandwrittenAnswer(handWrittenAnswer)
                 .setGraph(graph)
                 .build();
     }
