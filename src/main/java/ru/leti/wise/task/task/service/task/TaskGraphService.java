@@ -47,9 +47,9 @@ public class TaskGraphService {
         graphGrpcService.createGraph(graph);
         var pluginResults = task.getCondition()
                 .stream()
-                .map(condition -> handWrittenAnswer.containsKey(condition.getPluginId()) ?
-                        getPluginResult(condition, graph, handWrittenAnswer.get(condition.getPluginId()))
-                        : getPluginResult(condition, graph, ""))
+                .map(condition -> handWrittenAnswer.containsKey(condition.getPluginId())
+                        ? getPluginResult(condition, graph, task, handWrittenAnswer.get(condition.getPluginId()))
+                        : getPluginResult(condition, graph, task,  ""))
                 .toList();
 
         solution.setResult(pluginResults);
@@ -67,8 +67,12 @@ public class TaskGraphService {
                 .build();
     }
 
-    private SolutionGraph.PluginResult getPluginResult(TaskGraph.PluginInfo pluginInfo, GraphOuterClass.Graph graph, String handWrittenAnswer) {
-        var response = pluginGrpcService.checkPluginSolution(buildPluginSolution(pluginInfo, graph, handWrittenAnswer));
+    private SolutionGraph.PluginResult getPluginResult(TaskGraph.PluginInfo pluginInfo,
+                                                       GraphOuterClass.Graph graph,
+                                                       TaskGraph taskGraph,
+                                                       String handWrittenAnswer) {
+        var response = pluginGrpcService.checkPluginSolution(buildPluginSolution(pluginInfo, graph,
+                taskGraph.getGraphId(), handWrittenAnswer));
         var isCorrect = false;
         if (pluginInfo.getPluginType() == PluginType.GRAPH_CHARACTERISTIC) {
             isCorrect = validateCharacteristic(
@@ -90,7 +94,18 @@ public class TaskGraphService {
                 .build();
     }
 
-    private PluginOuterClass.Solution buildPluginSolution(TaskGraph.PluginInfo pluginInfo, GraphOuterClass.Graph graph, String handWrittenAnswer) {
+    private PluginOuterClass.Solution buildPluginSolution(TaskGraph.PluginInfo pluginInfo,
+                                                          GraphOuterClass.Graph graph,
+                                                          UUID graphId,
+                                                          String handWrittenAnswer) {
+        if (pluginInfo.getPluginType() == PluginType.GRAPH_NEW_GRAPH) {
+            return PluginOuterClass.Solution.newBuilder()
+                    .setPluginId(pluginInfo.getPluginId().toString())
+                    .setPluginType(PluginOuterClass.PluginType.valueOf(pluginInfo.getPluginType().toString()))
+                    .setGraph(graphGrpcService.getGraphById(graphId))
+                    .setOtherGraph(graph)
+                    .build();
+        }
         return PluginOuterClass.Solution.newBuilder()
                 .setPluginId(pluginInfo.getPluginId().toString())
                 .setPluginType(PluginOuterClass.PluginType.valueOf(pluginInfo.getPluginType().toString()))
