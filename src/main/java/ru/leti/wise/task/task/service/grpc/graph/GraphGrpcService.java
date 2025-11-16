@@ -27,12 +27,11 @@ public class GraphGrpcService {
         return graphStubHolder.get().generateRandomGraph(request).getGraph();
     }
 
-    public Graph createGraph(Graph graph) {
+    public GraphGrpc.CreateGraphResponse createGraph(Graph graph) {
         var request = GraphGrpc.CreateGraphRequest.newBuilder()
                 .setGraph(graph)
                 .build();
-
-        return graphStubHolder.get().createGraph(request).getGraph();
+        return graphStubHolder.get().createGraph(request);
     }
 
     public Graph getGraphById(UUID id) {

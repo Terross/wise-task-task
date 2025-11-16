@@ -38,6 +38,7 @@ public class TaskGraphService {
         TaskGraph task = (TaskGraph) taskRepository.findById(solution.getTaskId())
                 .orElseThrow(() -> new BusinessException(TASK_NOT_FOUND));
         var graph = request.getSolution().getSolutionGraph().getGraph();
+        graph.toBuilder().setAuthorId(request.getSolution().getAuthorId());
         HashMap<UUID, String> handWrittenAnswer = new HashMap<>();
         request.getSolution().getSolutionGraph().getPluginStringResultList()
                 .stream()
