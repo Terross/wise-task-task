@@ -1,6 +1,6 @@
 spring:
   application:
-    name: wise-task-plugin
+    name: wise-task-task
   datasource:
     url: jdbc:postgresql://wise-task-db:5432/wise_task_task
     username: wise_task_task
