@@ -11,6 +11,6 @@ import java.util.UUID;
 public interface SolutionRepository extends CrudRepository<Solution, UUID> {
 
     List<Solution> findSolutionEntitiesByAuthorIdAndTaskId(UUID authorId, UUID taskId);
-
+    void deleteByTaskId(UUID taskId);
     List<Solution> findSolutionEntitiesByAuthorId(UUID authorId);
 }

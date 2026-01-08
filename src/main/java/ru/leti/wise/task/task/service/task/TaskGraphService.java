@@ -38,9 +38,10 @@ public class TaskGraphService {
         TaskGraph task = (TaskGraph) taskRepository.findById(solution.getTaskId())
                 .orElseThrow(() -> new BusinessException(TASK_NOT_FOUND));
         var graph = request.getSolution().getSolutionGraph().getGraph();
-        graph.toBuilder().setAuthorId(request.getSolution().getAuthorId());
+        graph.toBuilder().setAuthorId(request.getSolution().getAuthorId()).build();
         HashMap<UUID, String> handWrittenAnswer = new HashMap<>();
-        request.getSolution().getSolutionGraph().getPluginStringResultList()
+        var solutionGraph = request.getSolution().getSolutionGraph();
+        solutionGraph.getPluginStringResultList()
                 .stream()
                 .map(pluginStringInput -> handWrittenAnswer
                         .put(UUID.fromString(pluginStringInput.getPluginId()), pluginStringInput.getHandWrittenAnswer()));
