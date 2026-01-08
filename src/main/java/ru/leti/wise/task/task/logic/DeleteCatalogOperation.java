@@ -3,6 +3,7 @@ package ru.leti.wise.task.task.logic;
 import com.google.protobuf.Empty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.leti.wise.task.task.error.BusinessException;
 import ru.leti.wise.task.task.error.ErrorCode;
 import ru.leti.wise.task.task.repository.CatalogRepository;
@@ -15,6 +16,7 @@ public class DeleteCatalogOperation {
 
     private final CatalogRepository catalogRepository;
 
+    @Transactional
     public Empty activate(UUID uuid) {
         if(catalogRepository.findById(uuid).isEmpty()){
             throw new BusinessException(ErrorCode.CATALOG_NOT_FOUND);

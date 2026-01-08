@@ -2,6 +2,7 @@ package ru.leti.wise.task.task.logic;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.leti.wise.task.task.error.BusinessException;
 import ru.leti.wise.task.task.error.ErrorCode;
 import ru.leti.wise.task.task.repository.SolutionRepository;
@@ -16,6 +17,7 @@ public class DeleteTaskOperation {
     private final TaskRepository taskRepository;
     private final SolutionRepository solutionRepository;
 
+    @Transactional
     public void activate(UUID id) {
         if(taskRepository.findById(id).isEmpty()){
             throw new BusinessException(ErrorCode.TASK_NOT_FOUND);
