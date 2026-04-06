@@ -2,9 +2,9 @@ spring:
   application:
     name: wise-task-task
   datasource:
-    url: jdbc:postgresql://localhost:5432/wise_task_task
-    username: wise_task_task
-    password: wise_task_task
+    url: jdbc:postgresql://localhost:5432/${TASK_DB}
+    username: ${TASK_DB_USER}
+    password: ${TASK_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     generate-ddl: false
@@ -17,23 +17,20 @@ logging:
   pattern:
     level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
   level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    org.hibernate.orm.jdbc.bind: TRACE
-    org.hibernate.type.descriptor.sql: TRACE
+    org.hibernate: ${LOGGING_LEVEL}
+    ru.leti.wise.task.task: ${LOGGING_LEVEL}
 
 grpc:
   service:
     graph:
-      port: 6565
+      port: ${GRAPH_GRPC_PORT}
       host: localhost
     plugin:
-      port: 6566
+      port: ${PLUGIN_GRPC_PORT}
       host: localhost
-  port: 6568
-  enable-reflection: true
+  port: ${TASK_GRPC_PORT}
 server:
-  port: 8083
+  port: ${TASK_PORT}
 
 management:
   tracing:
@@ -53,4 +50,4 @@ management:
             requests: true
   zipkin:
     tracing:
-      endpoint: http://${TEMPO_HOST:localhost}:${TEMPO_PORT:9411}/api/v2/spans
+      endpoint: http://localhost:9411/api/v2/spans
